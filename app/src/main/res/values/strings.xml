@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Notas Curso Moviles</string>
+    <string name="title">Notas Curso Moviles</string>
+    <string name="ingrese_nota_del_60">Ingrese nota del 60%</string>
+    <string name="helper_text">*obligatorio</string>
+    <string name="ingrese_nota_primer_avance">ingrese nota primer avance</string>
+    <string name="ingrese_nota_segundo_avance">Ingrese nota segundo avance</string>
+    <string name="nota_entrega_final">Nota entrega final</string>
+    <string name="calcular">Calcular</string>
+</resources>
