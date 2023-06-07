@@ -1,34 +1,41 @@
 package com.davito.notasdesarrollomovil.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.davito.notasdesarrollomovil.databinding.ActivityMainBinding
-import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val view = binding.root
         setContentView(view)
 
-        val df = DecimalFormat("#.##")
+        viewModel.errorMsg.observe(this) {
+            Toast.makeText(applicationContext, "debe digitar todos los datos", Toast.LENGTH_LONG)
+                .show()
+        }
+        viewModel.Msg.observe(this) {
+            binding.textView2.text = buildString {
+                append("la nota final es: ")
+                append(it)
+            }
+        }
 
         binding.calcularButton.setOnClickListener {
-            if (!(binding.nota60EditText.text.isNullOrEmpty() || binding.nota7EditText.text.isNullOrEmpty() || binding.nota8EditText.text.isNullOrEmpty() || binding.notaFinalEditText.text.isNullOrEmpty())){
-                val nota60 = binding.nota60EditText.text.toString().toDouble()
-                val nota7 = binding.nota7EditText.text.toString().toDouble()
-                val nota8 = binding.nota8EditText.text.toString().toDouble()
-                val notaFinal = binding.notaFinalEditText.text.toString().toDouble()
-                val resultado = df.format((nota60*0.60)+(nota7*0.07)+(nota8*0.08)+(notaFinal*0.25))
-                binding.textView2.text=resultado.toString()
-            } else {
-                binding.textView2.text=""
-            }
 
+            viewModel.validateData(
+                binding.nota60EditText.text.toString(),
+                binding.nota7EditText.text.toString(),
+                binding.nota8EditText.text.toString(),
+                binding.notaFinalEditText.text.toString()
+            )
         }
     }
 }
